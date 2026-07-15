@@ -11,7 +11,7 @@ import { app as socketApp, server } from "./utils/socket.js";
 
 dotenv.config();
 const app = socketApp;
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
@@ -45,9 +45,8 @@ if (process.env.NODE_ENV === "production") {
 
 connectDB()
   .then(() => {
-    const port = process.env.PORT || 8000; 
-    server.listen(port, () => {
-      console.log("Server is running on port " + port); 
+    server.listen(PORT, () => {
+      console.log("Server is running on port " + PORT);
     });
   })
   .catch((error) => {

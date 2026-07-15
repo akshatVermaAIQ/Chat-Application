@@ -15,15 +15,16 @@ const uploadFileOnCloudinary = async (filePath) => {
     if (!filePath) {
       return null;
     }
-    const response = await cloudinary.uploader
-      .upload(filePath)
-      .catch((err) => {
-        throw err;
-      });
-
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`File not found at path: ${filePath}`);
+    }
+    const response = await cloudinary.uploader.upload(filePath);
     return response;
   } catch (error) {
-    fs.unlinkSync(filePath);
+    console.error("Cloudinary upload error:", error.message);
+    if (filePath && fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
     return null;
   }
 };
